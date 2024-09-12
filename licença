@@ -1,0 +1,28 @@
+
+### .gitignore
+
+```gitignore
+# Python
+*.py[cod]
+__pycache__/
+*.so
+*.ipynb_checkpoints
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Dados
+data/
+
+# Modelos
+*.h5
+*.ckpt
+*.hdf5
+
+# Logs e arquivos temporários
+*.log
+*.tmp
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
