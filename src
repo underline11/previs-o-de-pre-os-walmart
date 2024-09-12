@@ -1,0 +1,96 @@
+!pip install pandas 
+!pip install numpy 
+!pip install matplotlib 
+!pip install pandas numpy matplotlib statsmodels scikit-learn tensorflow
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from statsmodels.tsa.arima_model import ARIMA
+from sklearn.preprocessing import MinMaxScaler
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import LSTM, Dense
+
+# Leitura dos dados
+url = "https://drive.google.com/uc?id=13SQ1N3PZtieiaVr37aK5rA8mcuQYMEHA"
+data = pd.read_csv(url, parse_dates=['Date'], index_col='Date')
+
+# Pré-processamento dos dados
+data = data[['Close']]
+data = data.dropna()
+
+# Plotando os dados
+plt.figure(figsize=(12, 6))
+plt.plot(data, label='Preço de Fechamento')
+plt.title('Preço de Fechamento das Ações do Walmart')
+plt.xlabel('Data')
+plt.ylabel('Preço de Fechamento')
+plt.legend()
+plt.show()
+
+# Separando os dados em treino e teste
+train_size = int(len(data) * 0.8)
+train, test = data[:train_size], data[train_size:]
+
+# ARIMA
+arima_model = ARIMA(train, order=(5, 1, 0))  # Ordem pode ser ajustada conforme a necessidade
+arima_result = arima_model.fit(disp=0)
+arima_forecast = arima_result.forecast(steps=len(test))[0]
+
+# Plotando a previsão ARIMA
+plt.figure(figsize=(12, 6))
+plt.plot(train, label='Treinamento')
+plt.plot(test.index, test, label='Teste')
+plt.plot(test.index, arima_forecast, label='Previsão ARIMA', color='red')
+plt.title('Previsão ARIMA')
+plt.xlabel('Data')
+plt.ylabel('Preço de Fechamento')
+plt.legend()
+plt.show()
+
+# Pré-processamento para LSTM
+scaler = MinMaxScaler(feature_range=(0, 1))
+scaled_data = scaler.fit_transform(data)
+
+def create_dataset(dataset, time_step=1):
+    X, Y = [], []
+    for i in range(len(dataset) - time_step - 1):
+        X.append(dataset[i:(i + time_step), 0])
+        Y.append(dataset[i + time_step, 0])
+    return np.array(X), np.array(Y)
+
+time_step = 60
+X, Y = create_dataset(scaled_data, time_step)
+
+# Dividindo os dados em treino e teste
+X_train, X_test = X[:train_size - time_step], X[train_size - time_step:]
+Y_train, Y_test = Y[:train_size - time_step], Y[train_size - time_step:]
+
+# Reshape para [samples, time steps, features] que é necessário para LSTM
+X_train = X_train.reshape((X_train.shape[0], X_train.shape[1], 1))
+X_test = X_test.reshape((X_test.shape[0], X_test.shape[1], 1))
+
+# Criando o modelo LSTM
+model = Sequential()
+model.add(LSTM(50, return_sequences=True, input_shape=(time_step, 1)))
+model.add(LSTM(50, return_sequences=False))
+model.add(Dense(1))
+model.compile(optimizer='adam', loss='mean_squared_error')
+
+# Treinando o modelo
+model.fit(X_train, Y_train, epochs=10, batch_size=32, verbose=1)
+
+# Previsão com LSTM
+predictions = model.predict(X_test)
+predictions = scaler.inverse_transform(predictions)
+
+# Plotando a previsão LSTM
+plt.figure(figsize=(12, 6))
+plt.plot(data.index, data['Close'], label='Preço de Fechamento')
+plt.plot(test.index, test, label='Teste')
+plt.plot(test.index[time_step:], predictions, label='Previsão LSTM', color='orange')
+plt.title('Previsão LSTM')
+plt.xlabel('Data')
+plt.ylabel('Preço de Fechamento')
+plt.legend()
+plt.show()
