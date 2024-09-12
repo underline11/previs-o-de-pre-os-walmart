@@ -1,0 +1,10 @@
+Previsão de Preços das Ações do Walmart
+Título: Previsão de Preços das Ações do Walmart
+Descrição: Este projeto visa realizar uma análise de séries temporais para prever os preços futuros das ações do Walmart com base nos dados históricos. Usando técnicas de aprendizado de máquina, como ARIMA (AutoRegressive Integrated Moving Average) e LSTM (Long Short-Term Memory), identificaremos padrões e tendências nos preços das ações, e utilizaremos essas informações para realizar previsões futuras. A análise fornecerá insights sobre o comportamento dos preços e pode ser útil para investidores e analistas de mercado.
+
+Objetivos:
+
+Analisar os dados históricos dos preços das ações do Walmart.
+Criar modelos de previsão usando ARIMA e LSTM.
+Comparar o desempenho dos modelos e avaliar suas previsões.
+Visualizar os resultados e gerar insights sobre a tendência de preços das ações.
