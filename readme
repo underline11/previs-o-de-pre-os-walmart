@@ -1,0 +1,22 @@
+# Previsão de Preços das Ações do Walmart
+
+## Descrição
+
+Este projeto realiza uma análise de séries temporais dos preços das ações do Walmart com o objetivo de prever os preços futuros. Utilizamos dois modelos de aprendizado de máquina, ARIMA e LSTM, para realizar a previsão. Este projeto é adequado para quem deseja explorar técnicas de previsão em séries temporais usando dados financeiros reais.
+
+## Estrutura do Projeto
+
+- `data/`: Contém o conjunto de dados com os preços históricos das ações do Walmart.
+- `notebooks/`: Jupyter Notebooks com a análise e a construção dos modelos.
+- `src/`: Código-fonte Python para treinamento e avaliação dos modelos ARIMA e LSTM.
+- `results/`: Gráficos e resultados das previsões realizadas pelos modelos.
+- `README.md`: Arquivo com a descrição do projeto.
+- `.gitignore`: Arquivo para ignorar dependências e arquivos temporários.
+- `LICENSE`: Licença do projeto.
+
+## Pré-requisitos
+
+As seguintes bibliotecas são necessárias para executar este projeto:
+
+```bash
+pip install pandas numpy matplotlib scikit-learn statsmodels tensorflow
