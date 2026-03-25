@@ -18,5 +18,4 @@ Este projeto realiza uma análise de séries temporais dos preços das ações d
 
 As seguintes bibliotecas são necessárias para executar este projeto:
 
-```bash
 pip install pandas numpy matplotlib scikit-learn statsmodels tensorflow
